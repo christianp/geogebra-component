@@ -28,4 +28,4 @@ You can give just the ID, or you can give the full URL of a geogebra material, b
 
 ### Documentation
 
-There's [a full API reference](reference.html) and [a page of examples](index.html).
+There's [a full API reference](https://somethingorotherwhatever.com/geogebra-component/reference.html) and [a page of examples](https://somethingorotherwhatever.com/geogebra-component/).
