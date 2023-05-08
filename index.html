@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GeoGebra component</title>
+
+        <script src="https://www.geogebra.org/scripts/deployggb.js"></script>
+        <script src="/geogebra-component.js" defer></script>
+
+        <style>
+            body {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 1em;
+            }
+            geogebra-applet {
+                margin: 1em;
+            }
+
+            footer {
+                border-top: 1px solid;
+                margin-top: 5em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <h1>geogebra-component.js</h1>
+        </header>
+        <main>
+            <p><code>geogebra-component.js</code> provides a custom HTML element for embedding GeoGebra applets.</p>
+  
+            <section id="usage">
+                <h2>Usage</h2>
+
+                <p>Include the GeoGebra <code>deployggb.js</code> script and <code>geogebra-component.js</code> in your page:</p>
+
+                <pre>
+&lt;html&gt;
+    &lt;head&gt;
+        …
+        &lt;script src="https://www.geogebra.org/scripts/deployggb.js"&gt;&lt;/script&gt;
+        &lt;script src="/geogebra-component.js" defer&gt;&lt;/script&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        …
+    &lt;/body&gt;
+&lt;/html&gt;
+                </pre>
+
+                <p>Write a <code>&lt;geogebra-applet&gt;</code> element wherever you want a GeoGebra applet to appear.</p>
+
+                <p>Attributes on the element configure how it appears.</p>
+
+                <p>Use event listeners and property getters/setters to interact with the applet after it loads.</p>
+
+                <p><strong><a href="reference.html">Full API reference</a></strong></p>
+            </section>
+
+            <section class="example">
+                <h2>Examples</h2>
+
+                <ul>
+                    <li><a href="examples/click-button.html">Click a button to add a point</a></li>
+                    <li><a href="examples/object-events.html">Object events</a></li>
+                    <li><a href="examples/show-selected-object.html">Show the selected object</a></li>
+                </ul>
+
+<geogebra-applet showtoolbar appname="graphing" width="700" height="500" coordsystem="-8,8,-5,5">
+    A = (1,1)
+    B = (2,3)
+    l = Line(A,B)
+</geogebra-applet>
+  
+<geogebra-applet material="https://www.geogebra.org/m/sA5Mb4vd"></geogebra-applet>
+            </section>
+        </main>
+
+        <footer>
+            <p>Written by <a href="https://somethingorotherwhatever.com">clp</a>.</p>
+            <p>Development managed on GitHub.</p>
+        </footer>
+  
+        <script>
+            // Show the code for each example in a <pre> element above the applet.
+            for(let g of document.querySelectorAll('geogebra-applet')) {
+                const p = document.createElement('pre');
+                p.textContent = g.outerHTML.replace(/=""/g,'');
+                g.before(p);
+            }
+        </script>
+    </body>
+</html>
+

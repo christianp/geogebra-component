@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GeoGebra component</title>
+
+        <script src="https://www.geogebra.org/scripts/deployggb.js"></script>
+        <script src="../geogebra-component.js" defer></script>
+        <script src="show-example.js" defer></script>
+
+        <style>
+            body {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 1em;
+            }
+            geogebra-applet {
+                margin: 1em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <a href="../index.html">geogebra-component.js</a>
+            <h1>Example: click a button to add a point</h1>
+        </header>
+        <main>
+            <p>This example shows how to modify the GeoGebra applet after a button outside the applet is clicked.</p>
+
+            <geogebra-applet id="applet" appname="geometry" perspective="G" width="600" height="600">
+                A = (1,1)
+            </geogebra-applet>
+            <button type="button" id="add-point">Add a point</button>
+            <button type="button" id="arrange-circle">Arrange points in a circle</button>
+        </main>
+
+        <script defer>
+const app = document.getElementById('applet');
+const add_point_button = document.getElementById('add-point');
+const arrange_circle_button = document.getElementById('arrange-circle');
+
+add_point_button.addEventListener('click', () => {
+    const [x,y] = [Math.random()*10-5, Math.random()*10-5];
+    app.evalCommand(`(${x}, ${y})`);
+});
+
+arrange_circle_button.addEventListener('click', async () => {
+    const objects = await app.objects();
+    objects.forEach((obj, i) => { 
+        const t = Math.PI*2 * i/objects.length;
+        const r = 3;
+        obj.coords = [r*Math.cos(t), r*Math.sin(t)];
+    });
+});
+        </script>
+    </body>
+</html>
+

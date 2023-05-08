@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GeoGebra component</title>
+
+        <script src="https://www.geogebra.org/scripts/deployggb.js"></script>
+        <script src="/geogebra-component.js" defer></script>
+        <script src="show-example.js" defer></script>
+
+        <style>
+            body {
+                margin: 0 auto;
+                padding: 1em;
+            }
+            geogebra-applet {
+                margin: 1em;
+            }
+            td, th {
+                padding: 0.2em 1em;
+            }
+            tr.selected td {
+                font-weight: bold;
+                background: #eee;
+            }
+            main {
+                display: grid;
+                grid-auto-flow: column;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <a href="../index.html">geogebra-component.js</a>
+            <h1>Example: show info on all objects in the applet</h1>
+        </header>
+        <main>
+            <geogebra-applet id="applet" appname="geometry" perspective="G" width="600" height="600">
+                A = (3,1)
+                B = (0,0)
+                C = (1,4)
+                c = Circle(A,B,C)
+                Polygon(A,B,C)
+            </geogebra-applet>
+         
+            <table id="object-list">
+                <thead>
+                    <tr>
+                        <th>Object</th>
+                        <th>Type</th>
+                        <th>Coordinates</th>
+                        <th>Value</th>
+                        <th>Definition</th>
+                        <th>Command</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </main>
+
+        <script defer>
+const app = document.getElementById('applet');
+
+let selected = null;
+
+function update_table() {
+    const tbody = document.querySelector('#object-list tbody');
+    tbody.innerHTML = '';
+    const objects = app.objects();
+    for(let obj of objects) {
+        const tr = document.createElement('tr');
+        let x,y;
+        try {
+            [x,y] = obj.coords;
+        } catch(e) {
+        }
+        tr.innerHTML = `<td>${obj.name}</td><td>${obj.objectType}</td><td>${x?.toFixed(3)}, ${y?.toFixed(3)}</td><td>${obj.value.toFixed(3)}</td><td>${obj.definition}</td><td>${obj.command}</td>`;
+        tr.classList.toggle('selected', obj.name == selected);
+        tbody.appendChild(tr);
+    }
+}
+
+app.addEventListener('update', update_table);
+app.addEventListener('load', update_table);
+app.addEventListener('add', update_table);
+app.addEventListener('remove', update_table);
+app.addEventListener('select', evt => {
+    selected = evt.detail.target;
+    update_table();
+});
+app.addEventListener('deselect', evt => {
+    selected = null;
+    update_table();
+});
+        </script>
+    </body>
+</html>
+

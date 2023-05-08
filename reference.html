@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GeoGebra component</title>
+        <style>
+            body {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 1em;
+            }
+            geogebra-applet {
+                margin: 1em;
+            }
+            tr:nth-child(2n) td {
+                background: #eee;
+            }
+
+            td {
+                padding: 0.5em;
+                vertical-align: top;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <a href="../index.html">geogebra-component.js</a>
+            <h1>geogebra-component.js API reference</h1>
+        </header>
+        <p>A web component to embed a <a href="https://geogebra.org">GeoGebra</a> applet.</p>
+        <p>It's a wrapper around <code>deployggb.js</code> provided by GeoGebra.</p>
+
+        <nav id="contents">
+            <h2>Contents</h2>
+
+            <ol>
+                <li><a href="#usage">Usage</a></li>
+                <li><a href="#attributes">Attributes</a></li>
+                <li><a href="#methods">Methods</a></li>
+                <li><a href="#properties">Properties</a></li>
+                <li><a href="#modes">Modes</a></li>
+        </nav>
+
+        <section id="usage">
+            <h2>Usage</h2>
+
+            <h3>Construct a worksheet from scratch</h3>
+
+            <p>Write GeoGebra commands inside the tag.
+            These commands are evaluated immediately after the applet loads.</p>
+            <pre><code>
+&lt;geogebra-applet&gt;
+  A = (1,2)
+&lt;/geogebra-applet&gt;
+            </code></pre>
+
+            <h3>Load a worksheet from GeoGebra.org by ID</h3>
+
+            <pre><code>
+&lt;geogebra-applet material="sA5Mb4vd" /&gt;
+&lt;geogebra-applet material="https://www.geogebra.org/m/sA5Mb4vd" /&gt;
+    </code></pre>
+
+            <p>You can give just the ID, or you can give the full URL of a geogebra material, because that's easier to think about!</p>
+        </section>
+
+        <section id="attributes">
+            <h2>Attributes</h2>
+            <p>The element supports attributes corresponding to most of <a href="https://wiki.geogebra.org/en/Reference:GeoGebra_App_Parameters">the embedding parameters provided by the GeoGebra API</a>:</p>
+            <ul>
+            <li><code>algebraInputPosition</code></li>
+            <li><code>allowStyleBar</code></li>
+            <li><code>allowUpscale</code></li>
+            <li><code>appName</code></li>
+            <li><code>autoHeight</code></li>
+            <li><code>borderColor</code></li>
+            <li><code>buttonBorderColor</code></li>
+            <li><code>buttonRounding</code></li>
+            <li><code>buttonShadows</code></li>
+            <li><code>capturingThreshold</code></li>
+            <li><code>country</code></li>
+            <li><code>customToolBar</code></li>
+            <li><code>editorBackgroundColor</code></li>
+            <li><code>editorForegroundColor</code></li>
+            <li><code>enable3d</code></li>
+            <li><code>enableCAS</code></li>
+            <li><code>enableFileFeatures</code></li>
+            <li><code>enableLabelDrags</code></li>
+            <li><code>enableRightClick</code></li>
+            <li><code>enableShiftDragZoom</code></li>
+            <li><code>enableUndoRedo</code></li>
+            <li><code>errorDialogsActive</code></li>
+            <li><code>filename</code></li>
+            <li><code>ggbBase64</code></li>
+            <li><code>height</code></li>
+            <li><code>keyboardType</code></li>
+            <li><code>language</code></li>
+            <li><code>material</code></li>
+            <li><code>playButton</code></li>
+            <li><code>preventFocus</code></li>
+            <li><code>randomSeed</code></li>
+            <li><code>rounding</code></li>
+            <li><code>scale</code></li>
+            <li><code>scaleContainerClass</code></li>
+            <li><code>showAlgebraInput</code></li>
+            <li><code>showAnimationButton</code></li>
+            <li><code>showFullscreenButton</code></li>
+            <li><code>showLogging</code></li>
+            <li><code>showMenuBar</code></li>
+            <li><code>showResetIcon</code></li>
+            <li><code>showStartTooltip</code></li>
+            <li><code>showSuggestionButtons</code></li>
+            <li><code>showToolBar</code></li>
+            <li><code>showToolBarHelp</code></li>
+            <li><code>showZoomButtons</code></li>
+            <li><code>textmode</code></li>
+            <li><code>transparentGraphics</code></li>
+            <li><code>width</code></li>
+            </ul>
+
+            <p>There are also a few extra attributes corresponding to methods in the API, which change settings in the applet:</p>
+
+            <table>
+            <tr><td><code>perspective</code></td><td>Define which views are visible, and in which order. A string of letters corresponding to views, as described in <a href="https://wiki.geogebra.org/en/SetPerspective_Command">the documentation for SetPerspective</a></td></tr>
+            <tr><td><code>axes</code></td><td>A comma-separated list of <code>true</code> or <code>false</code> values defining whether each axis is visible, in the order <code>x,y,z</code>.</td></tr>
+            <tr><td><code>xaxis</code></td><td>Is the x axis visible?</td></tr>
+            <tr><td><code>yaxis</code></td><td>Is the y axis visible?</td></tr>
+            <tr><td><code>zaxis</code></td><td>Is the z axis visible?</td></tr>
+            <tr><td><code>pointcapture</code></td><td>The point capturing mode: <code>none</code>, <code>snap</code>, <code>fixed</code>, or <code>automatic</code>.</td></tr>
+            <tr><td><code>rounding</code></td><td>How to round numbers. A number followed by either <code>d</code> for "decimal places", or <code>s</code> for "significant figures".</td></tr>
+            <tr><td><code>hidecursorwhendragging</code></td><td>Hide the cursor when dragging objects?</td></tr>
+            <tr><td><code>repaintingactive</code></td><td>Repaint the applet when anything changes?</td></tr>
+            <tr><td><code>errordialogsactive</code></td><td>Should error dialogs be shown?</td></tr>
+            <tr><td><code>coordsystem</code></td><td>A comma-separated list of coordinates for the viewport of the graphics window, in the order <code>xmin,xmax,ymin,ymax</code>.</td></tr>
+            <tr><td><code>axislabels</code></td><td>A comma-separated list of labels for the axes, in the order <code>x,y,z</code>.</td></tr>
+            <tr><td><code>xaxislabel</code></td><td>The label for the x axis.</td></tr>
+            <tr><td><code>yaxislabel</code></td><td>The label for the y axis.</td></tr>
+            <tr><td><code>zaxislabel</code></td><td>The label for the z axis.</td></tr>
+            <tr><td><code>axissteps</code></td><td>A comma-separated list of the distances between tick marks for each of the axes, in the order <code>x,y,z</code>.</td></tr>
+            <tr><td><code>axisunits</code></td><td>A comma-separated list of strings giving the units for each axis, in the order <code>x,y,z</code>.</td></tr>
+            <tr><td><code>grid</code></td><td>Should the grid be visible?</td></tr>
+            <tr><td><code>editorstate</code></td><td>Initial content for the algebra editor</td></tr>
+            <tr><td><code>rightAngleStyle</code></td><td>The style of right-angles. <code>none</code>, <code>square</code>, <code>dot</code>, or <code>L</code>.</td></tr>
+            <tr><td><code>gridIsBold</code></td><td>Should the grid be drawn a bit thicker?</td></tr>
+            <tr><td><code>gridType</code></td><td>The type of the grid.</td></tr>
+            <tr><td><code>gridDistance</code></td><td>The distance between grid lines in each axis.</td></tr>
+            <tr><td><code>bgColor</code></td><td>The applet's background colour.</td></tr>
+            <tr><td><code>gridColor</code></td><td>The colour of grid lines.</td></tr>
+            <tr><td><code>axesColor</code></td><td>The colour of the axes.</td></tr>
+            </table>
+        </section>
+
+        <section id="methods">
+            <h2>Methods</h2>
+            <p>The following methods from <a href="https://wiki.geogebra.org/en/Reference:GeoGebra_Apps_API">the GeoGebra API</a> are also available on the <code>&lt;geogebra-applet&gt;</code> element:</p>
+            <ul>
+            <li><code>debug</code></li>
+            <li><code>deleteObject</code></li>
+            <li><code>enable3D</code></li>
+            <li><code>enableCAS</code></li>
+            <li><code>enableLabelDrags</code></li>
+            <li><code>enableRightClick</code></li>
+            <li><code>enableShiftDragZoom</code></li>
+            <li><code>evalCommand</code></li>
+            <li><code>evalCommandCAS</code></li>
+            <li><code>evalCommandGetLabels</code></li>
+            <li><code>evalXML</code></li>
+            <li><code>exists</code></li>
+            <li><code>exportPDF</code></li>
+            <li><code>exportSVG</code></li>
+            <li><code>getAlgorithmXML</code></li>
+            <li><code>getAllObjectNames</code></li>
+            <li><code>getBase64</code></li>
+            <li><code>getCASObjectNumber</code></li>
+            <li><code>getCaption</code></li>
+            <li><code>getColor</code></li>
+            <li><code>getCommandString</code></li>
+            <li><code>getDefinitionString</code></li>
+            <li><code>getEditorState</code></li>
+            <li><code>getFileJSON</code></li>
+            <li><code>getFilling</code></li>
+            <li><code>getGraphicsOptions</code></li>
+            <li><code>getGridVisible</code></li>
+            <li><code>getLaTeXBase64</code></li>
+            <li><code>getLaTeXString</code></li>
+            <li><code>getLabelStyle</code></li>
+            <li><code>getLabelVisible</code></li>
+            <li><code>getLayer</code></li>
+            <li><code>getLineStyle</code></li>
+            <li><code>getLineThickness</code></li>
+            <li><code>getListValue</code></li>
+            <li><code>getMode</code></li>
+            <li><code>getObjectName</code></li>
+            <li><code>getObjectNumber</code></li>
+            <li><code>getObjectType</code></li>
+            <li><code>getPNGBase64</code></li>
+            <li><code>getPerspectiveXML</code></li>
+            <li><code>getPointSize</code></li>
+            <li><code>getPointStyle</code></li>
+            <li><code>getScreenshotBase64</code></li>
+            <li><code>getValue</code></li>
+            <li><code>getValueString</code></li>
+            <li><code>getVersion</code></li>
+            <li><code>getVisible</code></li>
+            <li><code>getXML</code></li>
+            <li><code>getXcoord</code></li>
+            <li><code>getYcoord</code></li>
+            <li><code>getZcoord</code></li>
+            <li><code>hideCursorWhenDragging</code></li>
+            <li><code>isAnimationRunning</code></li>
+            <li><code>isDefined</code></li>
+            <li><code>isIndependent</code></li>
+            <li><code>isMoveable</code></li>
+            <li><code>newConstruction</code></li>
+            <li><code>openFile</code></li>
+            <li><code>recalculateEnvironments</code></li>
+            <li><code>redo</code></li>
+            <li><code>refreshViews</code></li>
+            <li><code>registerAddListener</code></li>
+            <li><code>registerClearListener</code></li>
+            <li><code>registerClickListener</code></li>
+            <li><code>registerClientListener</code></li>
+            <li><code>registerObjectClickListener</code></li>
+            <li><code>registerObjectUpdateListener</code></li>
+            <li><code>registerRemoveListener</code></li>
+            <li><code>registerRenameListener</code></li>
+            <li><code>registerStoreUndoListener\n</code></li>
+            <li><code>registerUpdateListener</code></li>
+            <li><code>remove</code></li>
+            <li><code>renameObject</code></li>
+            <li><code>reset</code></li>
+            <li><code>setAlgebraOptions</code></li>
+            <li><code>setAnimating</code></li>
+            <li><code>setAnimationSpeed</code></li>
+            <li><code>setAuxiliary</code></li>
+            <li><code>setAxesVisible</code></li>
+            <li><code>setAxisLabels</code></li>
+            <li><code>setAxisSteps</code></li>
+            <li><code>setAxisUnits</code></li>
+            <li><code>setBase64</code></li>
+            <li><code>setCaption</code></li>
+            <li><code>setColor</code></li>
+            <li><code>setCoordSystem</code></li>
+            <li><code>setCoords</code></li>
+            <li><code>setCustomToolBar</code></li>
+            <li><code>setDisplayStyle</code></li>
+            <li><code>setEditorState</code></li>
+            <li><code>setErrorDialogsActive</code></li>
+            <li><code>setFileJSON</code></li>
+            <li><code>setFilling</code></li>
+            <li><code>setFixed</code></li>
+            <li><code>setGraphicsOptions</code></li>
+            <li><code>setGridVisible</code></li>
+            <li><code>setHeight</code></li>
+            <li><code>setLabelStyle</code></li>
+            <li><code>setLabelVisible</code></li>
+            <li><code>setLayer</code></li>
+            <li><code>setLayerVisible</code></li>
+            <li><code>setLineStyle</code></li>
+            <li><code>setLineThickness</code></li>
+            <li><code>setListValue</code></li>
+            <li><code>setMode</code></li>
+            <li><code>setOnTheFlyPointCreationActive</code></li>
+            <li><code>setPerspective</code></li>
+            <li><code>setPointCapture</code></li>
+            <li><code>setPointSize</code></li>
+            <li><code>setPointStyle</code></li>
+            <li><code>setRepaintingActive</code></li>
+            <li><code>setRounding</code></li>
+            <li><code>setSize</code></li>
+            <li><code>setTextValue</code></li>
+            <li><code>setTrace</code></li>
+            <li><code>setUndoPoint</code></li>
+            <li><code>setValue</code></li>
+            <li><code>setVisible</code></li>
+            <li><code>setWidth</code></li>
+            <li><code>setXML</code></li>
+            <li><code>showAlgebraInput</code></li>
+            <li><code>showMenuBar</code></li>
+            <li><code>showResetIcon</code></li>
+            <li><code>showToolBar</code></li>
+            <li><code>startAnimation</code></li>
+            <li><code>stopAnimation</code></li>
+            <li><code>undo</code></li>
+            <li><code>unregisterAddListener</code></li>
+            <li><code>unregisterClearListener</code></li>
+            <li><code>unregisterClickListener</code></li>
+            <li><code>unregisterClientListener</code></li>
+            <li><code>unregisterObjectClickListener</code></li>
+            <li><code>unregisterObjectUpdateListener</code></li>
+            <li><code>unregisterRemoveListener</code></li>
+            <li><code>unregisterRenameListener</code></li>
+            <li><code>unregisterStoreUndoListener</code></li>
+            <li><code>unregisterUpdateListener</code></li>
+            <li><code>writePNGtoFile</code></li>
+            </ul>
+        </section>
+
+        <section id="properties">
+            <h2>Properties</h2>
+            <p>The following properties on the <code>&lt;geogebra-applet&gt;</code> element object have defined setters or getters:</p>
+            <ul>
+            <li><code>appName</code> (get &amp; set)</li>
+            <li><code>animating</code> (get &amp; set) - corresponds to <code>startAnimation</code> or <code>stopAnimation</code> when set, and <code>isAnimationRunning</code> when got.</li>
+            <li><code>CASObjectNumber</code> (get)</li>
+            <li><code>editorState</code> (get &amp; set)</li>
+            <li><code>graphicsOptions</code> (get &amp; set)</li>
+            <li><code>height</code> (get &amp; set)</li>
+            <li><code>mode</code> (get &amp; set)</li>
+            <li><code>objectNames</code> (get)</li>
+            <li><code>objectNumber</code> (get)</li>
+            <li><code>perspective</code> (set)</li>
+            <li><code>scaleX</code> (get)</li>
+            <li><code>scaleY</code> (get)</li>
+            <li><code>width</code> (get &amp; set)</li>
+            </ul>
+        </section>
+
+        <section id="modes">
+            <h2>Modes</h2>
+            <p>The GeoGebra API only <a href="https://wiki.geogebra.org/en/Reference:Toolbar">refers to tool modes by number</a>. This component maps readable names to these values.
+            You can use these names with the <code>&lt;geogebra-applet&gt;</code> element's <code>mode</code> property.</p>
+            <table>
+                <thead>
+                    <tr><th>Name</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>move</td><td>0</td></tr>
+                    <tr><td>point</td><td>1</td></tr>
+                    <tr><td>join</td><td>2</td></tr>
+                    <tr><td>parallel</td><td>3</td></tr>
+                    <tr><td>orthogonal</td><td>4</td></tr>
+                    <tr><td>intersect</td><td>5</td></tr>
+                    <tr><td>delete</td><td>6</td></tr>
+                    <tr><td>vector</td><td>7</td></tr>
+                    <tr><td>line bisector</td><td>8</td></tr>
+                    <tr><td>angular bisector</td><td>9</td></tr>
+                    <tr><td>circle two points</td><td>10</td></tr>
+                    <tr><td>circle three points</td><td>11</td></tr>
+                    <tr><td>conic five points</td><td>12</td></tr>
+                    <tr><td>tangents</td><td>13</td></tr>
+                    <tr><td>relation</td><td>14</td></tr>
+                    <tr><td>segment</td><td>15</td></tr>
+                    <tr><td>polygon</td><td>16</td></tr>
+                    <tr><td>text</td><td>17</td></tr>
+                    <tr><td>ray</td><td>18</td></tr>
+                    <tr><td>midpoint</td><td>19</td></tr>
+                    <tr><td>circle arc three points</td><td>20</td></tr>
+                    <tr><td>circle sector three points</td><td>21</td></tr>
+                    <tr><td>circumcircle arc three points</td><td>22</td></tr>
+                    <tr><td>circumcircle sector three points</td><td>23</td></tr>
+                    <tr><td>semicircle</td><td>24</td></tr>
+                    <tr><td>slider</td><td>25</td></tr>
+                    <tr><td>image</td><td>26</td></tr>
+                    <tr><td>show hide object</td><td>27</td></tr>
+                    <tr><td>show hide label</td><td>28</td></tr>
+                    <tr><td>mirror at point</td><td>29</td></tr>
+                    <tr><td>mirror at line</td><td>30</td></tr>
+                    <tr><td>translate by vector</td><td>31</td></tr>
+                    <tr><td>rotate by angle</td><td>32</td></tr>
+                    <tr><td>dilate from point</td><td>33</td></tr>
+                    <tr><td>circle point radius</td><td>34</td></tr>
+                    <tr><td>copy visual style</td><td>35</td></tr>
+                    <tr><td>angle</td><td>36</td></tr>
+                    <tr><td>vector from point</td><td>37</td></tr>
+                    <tr><td>distance</td><td>38</td></tr>
+                    <tr><td>move rotate</td><td>39</td></tr>
+                    <tr><td>translateview</td><td>40</td></tr>
+                    <tr><td>zoom in</td><td>41</td></tr>
+                    <tr><td>zoom out</td><td>42</td></tr>
+                    <tr><td>selection listener</td><td>43</td></tr>
+                    <tr><td>polar diameter</td><td>44</td></tr>
+                    <tr><td>segment fixed</td><td>45</td></tr>
+                    <tr><td>angle fixed</td><td>46</td></tr>
+                    <tr><td>locus</td><td>47</td></tr>
+                    <tr><td>macro</td><td>48</td></tr>
+                    <tr><td>area</td><td>49</td></tr>
+                    <tr><td>slope</td><td>50</td></tr>
+                    <tr><td>regular polygon</td><td>51</td></tr>
+                    <tr><td>show hide checkbox</td><td>52</td></tr>
+                    <tr><td>compasses</td><td>53</td></tr>
+                    <tr><td>mirror at circle</td><td>54</td></tr>
+                    <tr><td>ellipse three points</td><td>55</td></tr>
+                    <tr><td>hyperbola three points</td><td>56</td></tr>
+                    <tr><td>parabola</td><td>57</td></tr>
+                    <tr><td>fitline</td><td>58</td></tr>
+                    <tr><td>record to spreadsheet</td><td>59</td></tr>
+                    <tr><td>button action</td><td>60</td></tr>
+                    <tr><td>textfield action</td><td>61</td></tr>
+                    <tr><td>pen</td><td>62</td></tr>
+                    <tr><td>rigid polygon</td><td>64</td></tr>
+                    <tr><td>polyline</td><td>65</td></tr>
+                    <tr><td>probability calculator</td><td>66</td></tr>
+                    <tr><td>attach / detach</td><td>67</td></tr>
+                    <tr><td>function inspector</td><td>68</td></tr>
+                    <tr><td>intersect two surfaces</td><td>69</td></tr>
+                    <tr><td>vector polygon</td><td>70</td></tr>
+                    <tr><td>create list</td><td>71</td></tr>
+                    <tr><td>complex number</td><td>72</td></tr>
+                    <tr><td>point on object</td><td>501</td></tr>
+                    <tr><td>mode spreadsheet create list</td><td>2001</td></tr>
+                    <tr><td>mode spreadsheet create matrix</td><td>2002</td></tr>
+                    <tr><td>mode spreadsheet create listofpoints</td><td>2003</td></tr>
+                    <tr><td>mode spreadsheet create tabletext</td><td>2004</td></tr>
+                    <tr><td>mode spreadsheet create polyline</td><td>2005</td></tr>
+                    <tr><td>mode spreadsheet onevarstats</td><td>2020</td></tr>
+                    <tr><td>mode spreadsheet twovarstats</td><td>2021</td></tr>
+                    <tr><td>mode spreadsheet multivarstats</td><td>2022</td></tr>
+                    <tr><td>mode spreadsheet sort</td><td>2030</td></tr>
+                    <tr><td>mode spreadsheet sort az</td><td>2031</td></tr>
+                    <tr><td>mode spreadsheet sort za</td><td>2032</td></tr>
+                    <tr><td>mode spreadsheet sum</td><td>2040</td></tr>
+                    <tr><td>mode spreadsheet average</td><td>2041</td></tr>
+                    <tr><td>mode spreadsheet count</td><td>2042</td></tr>
+                    <tr><td>mode spreadsheet min</td><td>2043</td></tr>
+                    <tr><td>mode spreadsheet max</td><td>2044</td></tr>
+                    <tr><td>freehand mode</td><td>73</td></tr>
+                    <tr><td>view in front of</td><td>502</td></tr>
+                    <tr><td>plane three points</td><td>510</td></tr>
+                    <tr><td>plane point line</td><td>511</td></tr>
+                    <tr><td>orthogonal plane</td><td>512</td></tr>
+                    <tr><td>parallel plane</td><td>513</td></tr>
+                    <tr><td>perpendicular line (3d)</td><td>514</td></tr>
+                    <tr><td>sphere point radius</td><td>520</td></tr>
+                    <tr><td>sphere two points</td><td>521</td></tr>
+                    <tr><td>cone given by two points and radius</td><td>522</td></tr>
+                    <tr><td>cylinder given by two points and radius</td><td>523</td></tr>
+                    <tr><td>prism</td><td>531</td></tr>
+                    <tr><td>extrude to prism or cylinder</td><td>532</td></tr>
+                    <tr><td>pyramid</td><td>533</td></tr>
+                    <tr><td>extrude to pyramid or cone</td><td>534</td></tr>
+                    <tr><td>net</td><td>535</td></tr>
+                    <tr><td>cube</td><td>536</td></tr>
+                    <tr><td>tetrahedron</td><td>537</td></tr>
+                    <tr><td>rotate view</td><td>540</td></tr>
+                    <tr><td>circle point radius direction</td><td>550</td></tr>
+                    <tr><td>circle axis point</td><td>551</td></tr>
+                    <tr><td>volume</td><td>560</td></tr>
+                    <tr><td>rotate around line</td><td>570</td></tr>
+                    <tr><td>mirror at plane</td><td>571</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </body>
+</html>

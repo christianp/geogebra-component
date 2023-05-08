@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>GeoGebra component</title>
+
+        <script src="https://www.geogebra.org/scripts/deployggb.js"></script>
+        <script src="/geogebra-component.js" defer></script>
+        <script src="show-example.js" defer></script>
+
+        <style>
+            body {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 1em;
+            }
+            geogebra-applet {
+                margin: 1em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header>
+            <a href="../index.html">geogebra-component.js</a>
+            <h1>Example: event listeners</h1>
+        </header>
+        <main>
+            <p>When you click point <code>A</code>, its colour changes.</p>
+            <geogebra-applet id="applet" appname="geometry" perspective="G" width="600" height="600">
+                A = (1,1)
+            </geogebra-applet>
+        </main>
+
+        <script defer>
+const app = document.getElementById('applet');
+
+async function go() {
+    await customElements.whenDefined('geogebra-applet');
+    const a = await app.get_object('A');
+    a.on('click',() => {
+        a.color = `hsl(${Math.random()*360}, 70%, 70%)`;
+    });
+}
+go();
+        </script>
+    </body>
+</html>
+
